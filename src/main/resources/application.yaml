@@ -27,6 +27,22 @@ management:
     web:
       exposure:
         include: 'prometheus,metrics,info,health'
+
+
+---
+spring:
+  profiles:
+    active: localhost
+
 logging:
   level:
     no.brreg.createbranchbackend: debug
+
+
+---
+
+spring:
+  profiles:
+    active: azure
+server:
+  port: 80
