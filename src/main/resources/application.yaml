@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: create-branch-backend
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/}
+    username: ${DATABASE_USER:postgres}
+    password: ${DATABASE_PASSWORD:password}
+
+mattr:
+  client-id: ${MATTR_CLIENT_ID}
+  client-secret: ${MATTR_CLIENT_SECRET}
+  tenant-url: ${MATTR_TENANT_URL}
+  brreg-wallet-did: ${MATTR_BRREG_WALLET_DID}
+  brreg-wallet-did-long: ${MATTR_BRREG_WALLET_DID_LONG}
+  presentation-request-template-id: ${MATTR_PRESENTATION_REQUEST_TEMPLATE_ID:da734f1a-4e75-43c5-a53a-d8f593b6d975}
+  callback-url: ${MATTR_CALLBACK_URL:https://webhook.site/0fa02740-ebac-4f6f-b6b8-20708cd643bd}
+
+management:
+  server:
+    port: 8181
+  endpoints:
+    web:
+      exposure:
+        include: 'prometheus,metrics,info,health'
+logging:
+  level:
+    no.brreg.createbranchbackend: debug
