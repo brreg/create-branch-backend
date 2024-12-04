@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>no.brreg</groupId>
 	<artifactId>create-branch-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1</version> <!-- never change this unless you also update the Dockerfile -->
 	<name>create-branch-backend</name>
 	<description>create-branch-backend</description>
 	<url/>
