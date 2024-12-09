@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.brreg.createbranchbackend.model.Credential;
 import no.brreg.createbranchbackend.repository.CredentialRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,8 +12,18 @@ import java.io.IOException;
 @Service
 public class CredentialService {
 
-    @Autowired
-    private CredentialRepository credentialRepository;
+    private final CredentialRepository credentialRepository;
+
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public CredentialService(CredentialRepository credentialRepository, SimpMessagingTemplate messagingTemplate) {
+        this.credentialRepository = credentialRepository;
+        this.messagingTemplate = messagingTemplate;
+    }
+
+    public Credential getCredentialBySessionId(String sessionId) {
+        return credentialRepository.findByUserSessionId(sessionId);
+    }
 
     public void parseResponseAndCreateCredentials(String jsonResponse) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -107,6 +117,10 @@ public class CredentialService {
         c.setHolderWalletAddress(holderWalletAddress);
 
         credentialRepository.save(c);
+
+        // inform frontend about data is received from Mattr
+        String destination = "/topic/sessions/" + challengeId;
+        messagingTemplate.convertAndSend(destination, "Data available for session " + c);
     }
 }
 

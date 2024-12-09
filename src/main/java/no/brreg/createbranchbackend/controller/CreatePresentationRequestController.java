@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-public class MattrCreateQrCodeController {
+public class CreatePresentationRequestController {
 
     private final MattrService mattrService;
 
     @Autowired
-    public MattrCreateQrCodeController(MattrService mattrService) {
+    public CreatePresentationRequestController(MattrService mattrService) {
         this.mattrService = mattrService;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/qrcode")
     public ResponseEntity<?> createQrCode(@RequestHeader(value = "x-session-id") String userSessionId) {
         if (userSessionId == null || userSessionId.isEmpty()) {
@@ -35,6 +36,7 @@ public class MattrCreateQrCodeController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/message")
     public ResponseEntity<?> createMessage(@RequestHeader(value = "x-session-id") String userSessionId, @RequestHeader(value = "recipient-did-url") String recipient) {
         if (userSessionId == null || userSessionId.isEmpty()) {
