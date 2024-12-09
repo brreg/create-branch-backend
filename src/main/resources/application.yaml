@@ -5,6 +5,7 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driverClassName: org.postgresql.Driver
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/}
@@ -28,6 +29,8 @@ management:
       exposure:
         include: 'prometheus,metrics,info,health'
 
+server:
+  port: 8080
 
 ---
 spring:
@@ -38,11 +41,8 @@ logging:
   level:
     no.brreg.createbranchbackend: debug
 
-
 ---
 
 spring:
   profiles:
     active: azure
-server:
-  port: 80
