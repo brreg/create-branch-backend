@@ -89,6 +89,8 @@ public class CredentialService {
 
         c.setForetakOrgnr(e.path("legal_person_id").asText());
 
+        c.setForetakOrgform(e.path("legal_form_type").asText());
+
         c.setForetakStiftet(e.path("registration_date").asText());
 
         c.setForetakAdresse(e.path("full_address").asText());

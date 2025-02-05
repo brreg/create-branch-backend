@@ -1,7 +1,7 @@
 package no.brreg.createbranchbackend.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import no.brreg.createbranchbackend.dto.PresentationUrlDTO;
+import no.brreg.createbranchbackend.dto.mattr.PresentationUrlDTO;
 import no.brreg.createbranchbackend.service.MattrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class CreatePresentationRequestController {
 
     private final MattrService mattrService;
@@ -19,7 +20,7 @@ public class CreatePresentationRequestController {
         this.mattrService = mattrService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/qrcode")
     public ResponseEntity<?> createQrCode(@RequestHeader(value = "x-session-id") String userSessionId) {
         if (userSessionId == null || userSessionId.isEmpty()) {
@@ -36,7 +37,7 @@ public class CreatePresentationRequestController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/message")
     public ResponseEntity<?> createMessage(@RequestHeader(value = "x-session-id") String userSessionId, @RequestHeader(value = "recipient-did-url") String recipient) {
         if (userSessionId == null || userSessionId.isEmpty()) {

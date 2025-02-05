@@ -1,7 +1,7 @@
 package no.brreg.createbranchbackend.service;
 
 import lombok.extern.slf4j.Slf4j;
-import no.brreg.createbranchbackend.dto.*;
+import no.brreg.createbranchbackend.dto.mattr.*;
 import no.brreg.createbranchbackend.model.PresentationResponse;
 import no.brreg.createbranchbackend.model.MessageEncryptionResponse;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package no.brreg.createbranchbackend.dto;
+package no.brreg.createbranchbackend.dto.mattr;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;

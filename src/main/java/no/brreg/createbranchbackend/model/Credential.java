@@ -45,6 +45,9 @@ public class Credential {
     //    "legal_person_id": "nofor:214254182",
     private String foretakOrgnr;
 
+    //    "legal_form_type": "AS - Aksjeselskap",
+    private String foretakOrgform;
+
     //    "registration_date": "2012-07-26",
     private String foretakStiftet;
 

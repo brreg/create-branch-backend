@@ -1,4 +1,4 @@
-package no.brreg.createbranchbackend.dto;
+package no.brreg.createbranchbackend.dto.mattr;
 
 import lombok.Data;
 
