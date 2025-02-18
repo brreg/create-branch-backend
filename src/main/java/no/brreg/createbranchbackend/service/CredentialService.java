@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+// This class parses the incoming credentials from Mattr and stores them in the database
+
 @Service
 public class CredentialService {
+
 
     private final CredentialRepository credentialRepository;
 

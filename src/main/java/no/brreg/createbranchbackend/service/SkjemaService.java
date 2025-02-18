@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+// This class is responsible for handle the response when the user is done filling out the NUF registration form
+
 @Service
 public class SkjemaService {
 

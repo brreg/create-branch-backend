@@ -5,6 +5,8 @@ import no.brreg.createbranchbackend.model.TenorPerson;
 import no.brreg.createbranchbackend.repository.TenorPersonRepository;
 import org.springframework.stereotype.Service;
 
+// This class fills the database with testdata, to avoid connecting our service to ann Tenor testdata server
+
 @Service
 public class TenorDataLoaderService {
 
