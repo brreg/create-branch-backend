@@ -20,6 +20,14 @@ public class Credential {
     // Henviser til .presentation.verifiableCredential[].credentialSubject.fnr
     private String personFnr;
 
+    private String personBy;
+    private String personLand;
+    private String personPostcode;
+    //Street number + House number
+    private String personVeiAddresse;
+    private String personVei;
+    private String personHusnummer;
+
 
     // --------------
     // EUCC part
@@ -44,6 +52,8 @@ public class Credential {
 
     //    "legal_person_id": "nofor:214254182",
     private String foretakOrgnr;
+
+    private String foretakOrgform;
 
     //    "registration_date": "2012-07-26",
     private String foretakStiftet;
