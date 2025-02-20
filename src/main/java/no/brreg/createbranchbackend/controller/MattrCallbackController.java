@@ -1,7 +1,8 @@
-package no.brreg.createbranchbackend.controller;
+/*package no.brreg.createbranchbackend.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import no.brreg.createbranchbackend.service.CredentialService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,3 +27,4 @@ public class MattrCallbackController {
         }
     }
 }
+*/

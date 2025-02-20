@@ -10,4 +10,5 @@ public class PresentationResponse {
     private String callbackUrl;
     private Long expiresTime;
     private String didcommUri;
+    private JsonNode verificationHistory;
 }

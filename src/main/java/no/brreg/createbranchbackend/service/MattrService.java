@@ -1,3 +1,5 @@
+
+/*
 package no.brreg.createbranchbackend.service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
-@Service
+//@Service
 @Slf4j
 public class MattrService {
 
@@ -224,3 +226,4 @@ public class MattrService {
         }
     }
 }
+*/

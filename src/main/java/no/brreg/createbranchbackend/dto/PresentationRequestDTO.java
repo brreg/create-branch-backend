@@ -5,11 +5,7 @@ import lombok.Data;
 @Data
 public class PresentationRequestDTO {
 
-    private String challenge;
+    private Boolean requestByReference=Boolean.TRUE;
 
-    private String templateId;
-
-    private String did;
-
-    private String callbackUrl;
+    private String presentationDefinitionId;
 }
