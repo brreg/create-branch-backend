@@ -1,14 +1,19 @@
 package no.brreg.createbranchbackend.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.brreg.createbranchbackend.model.Credential;
 import no.brreg.createbranchbackend.repository.CredentialRepository;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
+// This class parses the incoming credentials from Mattr and stores them in the database
 
 @Service
 public class CredentialService {
+
 
     private final CredentialRepository credentialRepository;
 
@@ -22,47 +27,56 @@ public class CredentialService {
     public Credential getCredentialBySessionId(String sessionId) {
         return credentialRepository.findByUserSessionId(sessionId);
     }
- // TODO: DO i realy need to do this dance with multiple handoffs of userSessionId ?
-    public void parseResponseAndCreateCredentials(JsonNode jsonResponse,String userSessionId) {
 
-        String holderWalletAddress  = jsonResponse.get(0).get("sub").asText();
+    public void parseResponseAndCreateCredentials(String jsonResponse) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
 
-
-        // TODO: Check for validity of credentials
         JsonNode npidCredentialNode = null;
         JsonNode euccCredentialNode = null;
 
-        for (int i=0;i<jsonResponse.size();i++){
-            if (jsonResponse.get(i).path("vc").path("type").get(0).asText().equals("EUCC")) {
-                euccCredentialNode = jsonResponse.get(i);
-            }
-            if (jsonResponse.get(i).path("vc").path("type").get(0).asText().equals("NPID")) {
-                npidCredentialNode = jsonResponse.get(i);
+        JsonNode rootNode = objectMapper.readTree(jsonResponse);
+
+        // Hent challengeId
+        String challengeId = rootNode.path("challengeId").asText();
+
+        // Hent holderWalletAddress
+        String holderWalletAddress = rootNode.path("holder").asText();
+
+        // Naviger til presentation.verifiableCredential[]
+        JsonNode verifiableCredentialsNode = rootNode
+                .path("presentation")
+                .path("verifiableCredential");
+
+        for (JsonNode credentialNode : verifiableCredentialsNode) {
+            JsonNode typeNode = credentialNode.path("type");
+
+            for (JsonNode typeValue : typeNode) {
+                // Sjekk om type[] inneholder "npid eller eucc"
+                if ("npid".equalsIgnoreCase(typeValue.asText())) {
+                    npidCredentialNode = credentialNode;
+                }
+                if ("eucc".equalsIgnoreCase(typeValue.asText())) {
+                    euccCredentialNode = credentialNode;
+                }
             }
         }
-        // TODO: These asserts dont work!
+
         assert euccCredentialNode != null;
         assert npidCredentialNode != null;
-        parseAndStoreCredential(euccCredentialNode, npidCredentialNode, userSessionId, holderWalletAddress);
+        parseAndStoreCredential(euccCredentialNode, npidCredentialNode, challengeId, holderWalletAddress);
     }
 
     private void parseAndStoreCredential(JsonNode euccCredentialNode, JsonNode npidCredentialNode, String challengeId, String holderWalletAddress) {
         Credential c = new Credential();
 
         // Hent credentialSubject for NPID
-        JsonNode n = npidCredentialNode.path("vc").path("credentialSubject");
-        c.setPersonNavn(n.path("given_name").asText() + " " + n.path("family_name").asText());
-        c.setPersonFnr(n.path("personal_administrative_number").asText());
-        c.setPersonBy(n.path("resident_city").asText());
-        c.setPersonLand(n.path("resident_country").asText());
-        c.setPersonPostcode(n.path("resident_postal_code").asText());
-        c.setPersonVei(n.path("resident_street").asText());
-        c.setPersonHusnummer(n.path("resident_house_number").asText());
-        c.setPersonVeiAddresse( c.getPersonVei() + " " + c.getPersonHusnummer());
+        JsonNode n = npidCredentialNode.path("credentialSubject");
+        c.setPersonNavn(n.path("navn").asText());
+        c.setPersonFnr(n.path("fnr").asText());
 
 
         // Hent credentialSubject for EUCC
-        JsonNode e = euccCredentialNode.path("vc");
+        JsonNode e = euccCredentialNode.path("credentialSubject");
 
         c.setIssuingAuthority(e.path("issuing_authority").asText());
 
@@ -70,39 +84,39 @@ public class CredentialService {
 
         c.setIssuingCountry(e.path("issuing_country").asText());
 
-        c.setAuthenticSourceName(e.path("issuing_authority").asText());
+        c.setAuthenticSourceName(e.path("authentic_source_name").asText());
 
-        c.setAuthenticSourceID(e.path("issuing_authority_id").asText());
+        c.setAuthenticSourceID(e.path("authentic_source_id").asText());
 
+        c.setForetakNavn(e.path("legal_person_name").asText());
 
-        c.setForetakNavn(e.path("credentialSubject").path("legal_person").path("legal_person_name").asText());
+        c.setForetakOrgnr(e.path("legal_person_id").asText());
 
-        c.setForetakOrgnr(e.path("credentialSubject").path("legal_person").path("legal_person_id").asText());
-        c.setForetakOrgform((e.path("credentialSubject").path("legal_person").path("legal_form_type").asText()));
+        c.setForetakOrgform(e.path("legal_form_type").asText());
 
-        c.setForetakStiftet(e.path("credentialSubject").path("legal_person").path("registration_date").asText());
+        c.setForetakStiftet(e.path("registration_date").asText());
 
-        c.setForetakAdresse(e.path("credentialSubject").path("legal_person").path("registered_address").path("full_address").asText());
+        c.setForetakAdresse(e.path("full_address").asText());
 
-        c.setForetakNaceKode(e.path("credentialSubject").path("legal_person").path("legal_entity_activity").path("code").asText());
+        c.setForetakNaceKode(e.path("legal_entity_activity_code").asText());
 
-        c.setForetakNaceBeskrivelse(e.path("credentialSubject").path("legal_person").path("legal_entity_activity").path("code").asText());
+        c.setForetakNaceBeskrivelse(e.path("legal_entity_activity_description").asText());
 
-        c.setForetakAktive(e.path("credentialSubject").path("legal_person").path("legal_entity_status").asText());
-// TODO: Support multiple people here !
-        c.setRepresentantNavn(e.path("credentialSubject").path("legal_representative").get(0).path("full_name").asText());
+        c.setForetakAktive(e.path("legal_entity_status").asText());
 
-        c.setRepresentantFodselsdato(e.path("credentialSubject").path("legal_representative").get(0).path("date_of_birth").asText());
+        c.setRepresentantNavn(e.path("legal_representative_full_name").asText());
 
-        c.setRepresentantSignaturRegel(e.path("credentialSubject").path("legal_representative").get(0).path("signatory_rule").asText());
+        c.setRepresentantFodselsdato(e.path("legal_representative_date_of_birth").asText());
+
+        c.setRepresentantSignaturRegel(e.path("legal_representative_signatory_rule").asText());
 
         // Sett userSessionId
         c.setUserSessionId(challengeId);
 
-        // TODO: Why do we need these, and what for ?
         // Hent issuer
-        c.setIssuerWalletName(euccCredentialNode.path("issuing_authority").asText());
-        c.setIssuerWalletAddress(euccCredentialNode.path("id").asText());
+        JsonNode issuerNode = euccCredentialNode.path("issuer");
+        c.setIssuerWalletName(issuerNode.path("name").asText());
+        c.setIssuerWalletAddress(issuerNode.path("id").asText());
 
         // Sett holderWalletAddress
         c.setHolderWalletAddress(holderWalletAddress);
