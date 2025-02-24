@@ -16,7 +16,7 @@ public class EuccDTO {
     @JsonProperty("credential")
     private Credential credential = new Credential();
 
-
+    @Data
     public static class Credential {
         @JsonProperty("authentic_source_id")
         private String authenticSourceId = "1234";
@@ -61,7 +61,7 @@ public class EuccDTO {
         private String type = "FullJsonSchemaValidator2021";
 
     }
-
+    @Data
     public static class CredentialStatus {
         @JsonProperty("id")
         private String id = "http://testing.1234";
@@ -70,7 +70,7 @@ public class EuccDTO {
         private String type = "testing";
 
     }
-
+    @Data
     public static class CredentialSubject {
         @JsonProperty("legal_entity")
         private String legalEntity = "AKADEMISK AKADEMISK KATT ALMISSE";
@@ -83,7 +83,7 @@ public class EuccDTO {
                 new LegalRepresentative("USELVISK JEGER", "1943-01-15", "alone")
         );
     }
-
+    @Data
     public static class LegalPerson {
         @JsonProperty("legal_entity_activity")
         private LegalEntityActivity legalEntityActivity = new LegalEntityActivity();
@@ -92,7 +92,7 @@ public class EuccDTO {
         private String legalEntityStatus = "active";
 
         @JsonProperty("legal_form_type")
-        private String legalFormType = "ENK";
+        private String legalFormType = "AS";
 
         @JsonProperty("legal_person_id")
         private String legalPersonId = "NOFOR:311032348";
@@ -108,24 +108,22 @@ public class EuccDTO {
 
         @JsonProperty("registration_member_state")
         private String registrationMemberState = "NO";
-
     }
-
+    @Data
     public static class LegalEntityActivity {
         @JsonProperty("code")
         private String code = "90.031";
 
         @JsonProperty("description")
         private String description = "Selvstendig kunstnerisk virksomhet innen visuell kunst";
-
     }
-
+    @Data
     public static class RegisteredAddress {
         @JsonProperty("full_address")
         private String fullAddress = "Vestre Røysenleirstedet;8742;SELVÆR";
 
     }
-
+    @Data
     public static class LegalRepresentative {
         @JsonProperty("full_name")
         private String fullName;
@@ -141,7 +139,5 @@ public class EuccDTO {
             this.dateOfBirth = dateOfBirth;
             this.signatoryRule = signatoryRule;
         }
-
     }
-
 }

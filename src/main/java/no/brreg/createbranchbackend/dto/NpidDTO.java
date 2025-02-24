@@ -1,7 +1,9 @@
 package no.brreg.createbranchbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class NpidDTO {
     @JsonProperty("issuanceMode")
     private String issuanceMode = "InTime";
@@ -10,14 +12,16 @@ public class NpidDTO {
     private String credentialDefinitionId = "ab6a0988-2f26-4368-ba8f-63ec3b483fc4";
 
     @JsonProperty("credential")
-    private Credential credential = new Credential();
+    public Credential credential = new Credential();
 
+    @Data
     public static class Credential {
         @JsonProperty("credentialSubject")
-        private CredentialSubject credentialSubject = new CredentialSubject();
+        public CredentialSubject credentialSubject = new CredentialSubject();
 
     }
 
+    @Data
     public static class CredentialSubject {
         @JsonProperty("birth_date")
         private String birthDate = "1943-01-15";
@@ -65,5 +69,4 @@ public class NpidDTO {
         private int sex = 1;
 
     }
-
 }
