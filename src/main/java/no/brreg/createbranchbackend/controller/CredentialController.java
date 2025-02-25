@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000, https://polite-bush-0c26cb003.5.azurestaticapps.net")
 public class CredentialController {
 
     private final CredentialService credentialService;
 
     public CredentialController(CredentialService credentialService) { this.credentialService = credentialService; }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/session")
     public ResponseEntity<?> getSession(@RequestHeader(value = "x-session-id") String userSessionId) {
         if (userSessionId == null || userSessionId.isEmpty()) {

@@ -1,7 +1,6 @@
 package no.brreg.createbranchbackend.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import no.brreg.createbranchbackend.dto.SkjemaForhandsutfyltDTO;
 import no.brreg.createbranchbackend.dto.SkjemaInnsendtDTO;
 import no.brreg.createbranchbackend.dto.SkjemaKomlettTilSigneringDTO;
 import no.brreg.createbranchbackend.model.Signering;
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Slf4j
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000, https://polite-bush-0c26cb003.5.azurestaticapps.net")
 public class SkjemaController {
 
     private final SkjemaService skjemaService;
