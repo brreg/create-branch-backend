@@ -4,18 +4,20 @@ import lombok.Data;
 import no.brreg.createbranchbackend.model.Credential;
 import no.brreg.createbranchbackend.model.Signering;
 import no.brreg.createbranchbackend.model.SkjemaInnsendt;
-import no.brreg.createbranchbackend.model.TenorPerson;
 
 @Data
 public class SkjemaKomlettTilSigneringDTO {
 
-    public SkjemaKomlettTilSigneringDTO(Credential credential, TenorPerson tenorPerson, SkjemaInnsendt skjemaInnsendt, Signering signering) {
+    // Denne klassen kombinerer data fra innsend skjema, med credential i databasen
+    // VI gjør dette fordi vi ikke vil stole på credentials som kommer i retur fra clienten
+    // Dette skal brukes når brukeren skal få tilsendt en signeringsoppgave, dvs. se hva hen signerer på.
+    public SkjemaKomlettTilSigneringDTO(Credential credential, SkjemaInnsendt skjemaInnsendt, Signering signering) {
         personNavn = credential.getPersonNavn();
         personFnr = credential.getPersonFnr();
-        personAdresse = tenorPerson.getAdresse();
-        personPostnummer = tenorPerson.getPostnummer();
-        personPoststed = tenorPerson.getPoststed();
-        personLand = tenorPerson.getLand();
+        personVeiAddresse = credential.getPersonVeiAddresse();
+        personBy = credential.getPersonBy();
+        personPostcode = credential.getPersonPostcode();
+        personLand = credential.getPersonLand();
 
         issuingAuthority = credential.getIssuingAuthority();
         issuingAuthorityId = credential.getIssuingAuthorityId();
@@ -54,11 +56,11 @@ public class SkjemaKomlettTilSigneringDTO {
 
     private String personFnr;
 
-    private String personAdresse;
+    private String personVeiAddresse;
 
-    private String personPostnummer;
+    private String personBy;
 
-    private String personPoststed;
+    private String personPostcode;
 
     private String personLand;
 
