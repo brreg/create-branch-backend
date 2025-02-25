@@ -23,29 +23,7 @@ public class SkjemaController {
         this.skjemaService = skjemaService;
     }
 
-    //    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/session")
-    public ResponseEntity<?> getSession(@RequestHeader(value = "x-session-id") String userSessionId) {
-        if (userSessionId == null || userSessionId.isEmpty()) {
-            log.error("Missing x-session-id in header");
-            return ResponseEntity.badRequest().body("Missing x-session-id in header");
-        }
-
-        try {
-            SkjemaForhandsutfyltDTO skjema = skjemaService.getForhandsutfyltSkjema(userSessionId);
-            if (skjema == null) {
-                log.info("forhåndsutfylt skjema for sessionId {} not found", userSessionId);
-                return ResponseEntity.noContent().build();
-
-            } else {
-                return ResponseEntity.ok(skjema);
-            }
-        } catch (Exception e) {
-            log.error("Error getting credential", e);
-            return ResponseEntity.badRequest().body("Error getting credential");
-        }
-    }
-
+    // send inn utfylt skjema
     @PostMapping("/sendinn")
     public String storeSkjema(@RequestHeader(value = "x-session-id") String userSessionId, @RequestBody SkjemaInnsendtDTO skjema) {
         try {
