@@ -12,15 +12,6 @@ spring:
     username: ${DATABASE_USER:postgres}
     password: ${DATABASE_PASSWORD:password}
 
-mattr:
-  client-id: ${MATTR_CLIENT_ID}
-  client-secret: ${MATTR_CLIENT_SECRET}
-  tenant-url: ${MATTR_TENANT_URL}
-  brreg-wallet-did: ${MATTR_BRREG_WALLET_DID}
-  brreg-wallet-did-long: ${MATTR_BRREG_WALLET_DID_LONG}
-  presentation-request-template-id: ${MATTR_PRESENTATION_REQUEST_TEMPLATE_ID:da734f1a-4e75-43c5-a53a-d8f593b6d975}
-  callback-url: ${MATTR_CALLBACK_URL:https://webhook.site/297da758-267c-4d68-ba11-1afb256f7930}
-
 igrant:
   api-key: ${IGRANT_API_KEY}
   endpoint: ${IGRANT_ENDPOINT:https://demo-api.igrant.io/}

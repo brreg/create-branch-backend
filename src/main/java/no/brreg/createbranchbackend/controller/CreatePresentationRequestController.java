@@ -37,6 +37,7 @@ public class CreatePresentationRequestController {
         }
     }
     /*
+    //This block is allowed to live rent free here, until the DID functionality is supported in igrant.
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/message")
     public ResponseEntity<?> createMessage(@RequestHeader(value = "x-session-id") String userSessionId, @RequestHeader(value = "recipient-did-url") String recipient) {
