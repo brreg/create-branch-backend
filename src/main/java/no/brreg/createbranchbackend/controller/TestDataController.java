@@ -30,6 +30,7 @@ public class TestDataController {
         }
     }
 
+
     @GetMapping("/qrcodeEucc")
     public ResponseEntity<?> createQrCodeEucc(@RequestParam(value = "button", required = false, defaultValue = "no_data") String buttonContent) {
         try {
