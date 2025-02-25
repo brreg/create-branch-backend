@@ -23,7 +23,7 @@ mattr:
 
 igrant:
   api-key: ${IGRANT_API_KEY}
-  endpoint: ${IGRANT_ENDPOINT}
+  endpoint: ${IGRANT_ENDPOINT:https://demo-api.igrant.io/}
   presentation-request-template-id: ${IGRANT_PRESENTATION_REQUEST_TEMPLATE_ID:e4567585-126e-4c9b-a070-521458e5cf54}
 
 
