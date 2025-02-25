@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/testdata")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000, https://polite-bush-0c26cb003.5.azurestaticapps.net")
 public class TestDataController {
     private final TestDataService testDataService;
 
@@ -18,7 +19,6 @@ public class TestDataController {
         this.testDataService = testDataService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/qrcodeNpid")
     public ResponseEntity<?> createQrCodeNpid(@RequestParam(value = "button", required = false, defaultValue = "no_data") String buttonContent) {
         try {
@@ -30,7 +30,7 @@ public class TestDataController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+
     @GetMapping("/qrcodeEucc")
     public ResponseEntity<?> createQrCodeEucc(@RequestParam(value = "button", required = false, defaultValue = "no_data") String buttonContent) {
         try {

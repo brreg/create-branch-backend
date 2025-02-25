@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000, https://polite-bush-0c26cb003.5.azurestaticapps.net")
 public class CreatePresentationRequestController {
 
     private final IgrantService igrantService;
@@ -20,7 +21,6 @@ public class CreatePresentationRequestController {
         this.igrantService = igrantService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/qrcode")
     public ResponseEntity<?> createQrCode(@RequestHeader(value = "x-session-id") String userSessionId) {
         if (userSessionId == null || userSessionId.isEmpty()) {
