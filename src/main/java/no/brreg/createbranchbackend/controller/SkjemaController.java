@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
+// TODO: implementer skjema innsending og signering i frontend
+
 @Slf4j
 @RestController
 @RequestMapping("/api")
@@ -35,8 +37,8 @@ public class SkjemaController {
     }
 
     // hent signeringsoppgave
-    @GetMapping("/signeringsoppgave/{userSessionId}")
-    public ResponseEntity<?> getSigneringsOppgave(@PathVariable String userSessionId) {
+    @GetMapping("/signeringsoppgave")
+    public ResponseEntity<?> getSigneringsOppgave(@RequestHeader(value = "x-session-id") String userSessionId) {
         if (userSessionId == null || userSessionId.isEmpty()) {
             log.error("Missing x-session-id in header");
         }
@@ -56,9 +58,9 @@ public class SkjemaController {
     }
 
     // signer signeringsoppgave
-    @PostMapping("/signeringsoppgave/{userSessionId}")
-    public ResponseEntity<?> signerOppgave(@RequestHeader(value = "x-session-id") String userSessionId, @PathVariable String userSessionIdFromUrl) {
-        if (userSessionId == null || userSessionId.isEmpty() || !Objects.equals(userSessionIdFromUrl, userSessionId)) {
+    @PostMapping("/signeringsoppgave")
+    public ResponseEntity<?> signerOppgave(@RequestHeader(value = "x-session-id") String userSessionId) {
+        if (userSessionId == null || userSessionId.isEmpty()) {
             log.error("Missing x-session-id in header");
         }
 
