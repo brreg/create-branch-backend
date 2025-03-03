@@ -127,12 +127,12 @@ public class TestDataService {
 
 
         switch (buttonContent) {
-            case "USELVISK JEGER":
+            case "Ola Norman":
                 claim.setBirthDate("1943-01-15");
                 claim.setBirthPlace("NORDBERG");
                 claim.setEmailAddress("hopefullynotexisting@brreg.no");
-                claim.setFamilyName("JEGER");
-                claim.setGivenName("USELVISK");
+                claim.setFamilyName("Norman");
+                claim.setGivenName("Ola");
                 claim.setMobilePhoneNumber("81549300");
                 claim.setNationality("NO");
                 claim.setPersonalAdministrativeNumber("15814399394");
@@ -146,12 +146,12 @@ public class TestDataService {
 
                 return n;
 
-            case "FORMBAR OPPORTUNIST":
+            case "Kari Norman":
                 claim.setBirthDate("1993-05-10");
                 claim.setBirthPlace("SANDER");
                 claim.setEmailAddress("hopefullynotexisting@brreg.no");
-                claim.setFamilyName("OPPORTUNIST");
-                claim.setGivenName("FORMBAR");
+                claim.setFamilyName("Norman");
+                claim.setGivenName("Kari");
                 claim.setMobilePhoneNumber("81549300");
                 claim.setNationality("NO");
                 claim.setPersonalAdministrativeNumber("10859399067");
