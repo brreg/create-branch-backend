@@ -11,46 +11,51 @@ public class EuccDTO {
     private String issuanceMode = "InTime";
 
     @JsonProperty("credentialDefinitionId")
-    private String credentialDefinitionId = "35333c94-da82-42e3-8c1d-49ed80197374";
+    private String credentialDefinitionId = "cb91bf08-eaca-4267-9ed3-54e59bf98e9b";
 
     @JsonProperty("credential")
     private Credential credential = new Credential();
 
     @Data
     public static class Credential {
-        @JsonProperty("authentic_source_id")
-        private String authenticSourceId = "1234";
+        @JsonProperty("claims")
+        private Claims claims = new Claims();
 
-        @JsonProperty("authentic_source_name")
-        private String authenticSourceName = "testing";
+        @Data
+        public static class Claims {
+            @JsonProperty("authentic_source_id")
+            private String authenticSourceId = "1234";
 
-        @JsonProperty("credentialSchema")
-        private CredentialSchema credentialSchema = new CredentialSchema();
+            @JsonProperty("authentic_source_name")
+            private String authenticSourceName = "testing";
 
-        @JsonProperty("credentialStatus")
-        private CredentialStatus credentialStatus = new CredentialStatus();
+            @JsonProperty("credentialSchema")
+            private CredentialSchema credentialSchema = new CredentialSchema();
 
-        @JsonProperty("credentialSubject")
-        private CredentialSubject credentialSubject = new CredentialSubject();
+            @JsonProperty("credentialStatus")
+            private CredentialStatus credentialStatus = new CredentialStatus();
 
-        @JsonProperty("expiry_date")
-        private String expiryDate = "2025-03-16T11:08:54Z";
+            @JsonProperty("credentialSubject")
+            private CredentialSubject credentialSubject = new CredentialSubject();
 
-        @JsonProperty("issuance_date")
-        private String issuanceDate = "2025-02-14T11:08:54Z";
+            @JsonProperty("expiry_date")
+            private String expiryDate = "2025-03-16T11:08:54Z";
 
-        @JsonProperty("issuing_authority")
-        private String issuingAuthority = "Brønnøysundregistrene";
+            @JsonProperty("issuance_date")
+            private String issuanceDate = "2025-02-14T11:08:54Z";
 
-        @JsonProperty("issuing_authority_id")
-        private String issuingAuthorityId = "NOFOR:974760673";
+            @JsonProperty("issuing_authority")
+            private String issuingAuthority = "Brønnøysundregistrene";
 
-        @JsonProperty("issuing_country")
-        private String issuingCountry = "NO";
+            @JsonProperty("issuing_authority_id")
+            private String issuingAuthorityId = "NOFOR:974760673";
 
-        @JsonProperty("issuing_jurisdiction")
-        private String issuingJurisdiction = "NO";
+            @JsonProperty("issuing_country")
+            private String issuingCountry = "NO";
 
+            @JsonProperty("issuing_jurisdiction")
+            private String issuingJurisdiction = "NO";
+        }
     }
 
     public static class CredentialSchema {
@@ -120,7 +125,7 @@ public class EuccDTO {
     @Data
     public static class RegisteredAddress {
         @JsonProperty("full_address")
-        private String fullAddress = "Vestre Røysenleirstedet;8742;SELVÆR";
+        private String fullAddress = "Vestre Røysenleirstedet;8742;SELVÆR;Norge";
 
     }
     @Data

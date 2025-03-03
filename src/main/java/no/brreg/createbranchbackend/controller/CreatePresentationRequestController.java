@@ -29,13 +29,48 @@ public class CreatePresentationRequestController {
         }
 
         try {
-            PresentationUrlDTO presentationResponseDTO = igrantService.createPresentationUrl(userSessionId);
+            PresentationUrlDTO presentationResponseDTO = igrantService.createPresentationUrlBulk(userSessionId);
             return ResponseEntity.ok(presentationResponseDTO);
         } catch (Exception e) {
             log.error("Error creating QR code: {}", e.getMessage(), e);
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+    @PostMapping("/qrcodeNpid")
+    public ResponseEntity<?> createQrCodeNpid(@RequestHeader(value = "x-session-id") String userSessionId) {
+        if (userSessionId == null || userSessionId.isEmpty()) {
+            log.error("Missing x-session-id in header");
+            return ResponseEntity.badRequest().body("Missing x-session-id in header");
+        }
+
+        try {
+            PresentationUrlDTO presentationResponseDTO = igrantService.createPresentationUrlNpid(userSessionId);
+            return ResponseEntity.ok(presentationResponseDTO);
+        } catch (Exception e) {
+            log.error("Error creating QR code: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/qrcodeRecite")
+    public ResponseEntity<?> createQrCodeRecite(@RequestHeader(value = "x-session-id") String userSessionId) {
+        if (userSessionId == null || userSessionId.isEmpty()) {
+            log.error("Missing x-session-id in header");
+            return ResponseEntity.badRequest().body("Missing x-session-id in header");
+        }
+
+        try {
+            PresentationUrlDTO presentationResponseDTO = igrantService.issueRecite(userSessionId);
+            return ResponseEntity.ok(presentationResponseDTO);
+        } catch (Exception e) {
+            log.error("Error creating QR code: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+
+
+
     /*
     //This block is allowed to live rent free here, until the DID functionality is supported in igrant.
     @CrossOrigin(origins = "http://localhost:3000")

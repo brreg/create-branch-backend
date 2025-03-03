@@ -15,7 +15,8 @@ spring:
 igrant:
   api-key: ${IGRANT_API_KEY}
   endpoint: ${IGRANT_ENDPOINT:https://demo-api.igrant.io/}
-  presentation-request-template-id: ${IGRANT_PRESENTATION_REQUEST_TEMPLATE_ID:e4567585-126e-4c9b-a070-521458e5cf54}
+  presentation-request-id-bulk: ${IGRANT_PRESENTATION_REQUEST_ID_BULK:c67df445-27a4-49fa-af54-654f601a6688}
+  presentation-request-id-npid: ${IGRANT_PRESENTATION_REQUEST_ID_NPID:1b0b960a-06fd-4b4f-9f84-c545d49c89f9}
 
 
 management:

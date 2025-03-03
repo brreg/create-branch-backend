@@ -11,4 +11,5 @@ public class PresentationResponse {
     private Long expiresTime;
     private String didcommUri;
     private JsonNode verificationHistory;
+    private JsonNode credentialHistory;
 }

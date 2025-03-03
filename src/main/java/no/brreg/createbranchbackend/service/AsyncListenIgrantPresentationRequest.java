@@ -2,7 +2,9 @@ package no.brreg.createbranchbackend.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import no.brreg.createbranchbackend.repository.CredentialRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,6 +13,8 @@ import java.util.Objects;
 
 @Service
 public class AsyncListenIgrantPresentationRequest {
+
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Value("${igrant.api-key}")
     private String api_key;
@@ -22,19 +26,21 @@ public class AsyncListenIgrantPresentationRequest {
 
     private final CredentialService credentialService;
 
-    public AsyncListenIgrantPresentationRequest(CredentialService credentialService) {
+    public AsyncListenIgrantPresentationRequest(CredentialService credentialService, SimpMessagingTemplate messagingTemplate) {
         this.credentialService = credentialService;
+        this.messagingTemplate = messagingTemplate;
+
     }
 
 
     @Async
-    public void asyncListenIgrantPresentation(String presentationExchangeId,String userSessionId) throws InterruptedException {
+    public void asyncListenIgrantPresentation(String presentationExchangeId,String userSessionId, String type) throws InterruptedException {
         // Din asynkrone logikk her
-        System.out.println("Asynkron metode kjører...PresentationExchangeId: " + presentationExchangeId);
+        System.out.println("Asynkron metode kjører...PresentationExchangeId: " + presentationExchangeId + " Type: " + type );
 
         for (int i = 0;i<60;i++)
         {
-            Thread.sleep(3000); // Simulerer en langvarig oppgave
+            Thread.sleep(3000);
             String igrantURL = endpoint + "/v3/config/digital-wallet/openid/sdjwt/verification/history/" + presentationExchangeId;
             String response = webClient.get().uri(igrantURL).header("Authorization",api_key).retrieve().bodyToMono(String.class).block();
             try {
@@ -43,9 +49,16 @@ public class AsyncListenIgrantPresentationRequest {
                 if (Objects.equals(jsonNode.path("verificationHistory").path("status").asText(), "presentation_acked"))
                 {
                     System.out.println("Credential exchange complete. Continuing..");
-                    credentialService.parseResponseAndCreateCredentials(jsonNode.path("verificationHistory").path("presentation").get(0).path("vp").path("verifiableCredential"),userSessionId);
-
-                    break;
+                    if (Objects.equals(type, "bulk")) {
+                        credentialService.parseResponseAndCreateCredentials(jsonNode.path("verificationHistory").path("presentation"), userSessionId);
+                        return;
+                    }
+                    if (Objects.equals(type, "signatur")) {
+                        // inform frontend about data is received from Mattr
+                        String destination = "/topic/sessions/" + userSessionId + "_signed";
+                        messagingTemplate.convertAndSend(destination, "Request Signed");
+                        return;
+                    }
                 }
                 if (i == 39){
                     // TODO: Give error message/timeout to frontend that the process needs to be restarted.

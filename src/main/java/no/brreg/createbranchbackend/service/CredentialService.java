@@ -33,10 +33,10 @@ public class CredentialService {
         JsonNode euccCredentialNode = null;
 
         for (int i=0;i<jsonResponse.size();i++){
-            if (jsonResponse.get(i).path("vc").path("type").get(0).asText().equals("EUCC")) {
+            if (jsonResponse.get(i).path("vct").asText().equals("EWCEuCompanyCertificate")) {
                 euccCredentialNode = jsonResponse.get(i);
             }
-            if (jsonResponse.get(i).path("vc").path("type").get(0).asText().equals("NPID")) {
+            if (jsonResponse.get(i).path("vct").asText().equals("NaturalPersonalIdentificationData")) {
                 npidCredentialNode = jsonResponse.get(i);
             }
         }
@@ -50,7 +50,7 @@ public class CredentialService {
         Credential c = new Credential();
 
         // Hent credentialSubject for NPID
-        JsonNode n = npidCredentialNode.path("vc").path("credentialSubject");
+        JsonNode n = npidCredentialNode;
         c.setPersonNavn(n.path("given_name").asText() + " " + n.path("family_name").asText());
         c.setPersonFnr(n.path("personal_administrative_number").asText());
         c.setPersonBy(n.path("resident_city").asText());
@@ -62,7 +62,7 @@ public class CredentialService {
 
 
         // Hent credentialSubject for EUCC
-        JsonNode e = euccCredentialNode.path("vc");
+        JsonNode e = euccCredentialNode;
 
         c.setIssuingAuthority(e.path("issuing_authority").asText());
 
