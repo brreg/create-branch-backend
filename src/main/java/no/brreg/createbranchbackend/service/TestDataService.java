@@ -229,17 +229,17 @@ public class TestDataService {
 
 
         return switch (buttonContent) {
-            case "USELVISK JEGER" -> {
+            case "Ola Norman" -> {
 
                 e.getCredential().getClaims().getCredentialSubject().setLegalRepresentative(List.of(
-                        new EuccDTO.LegalRepresentative("USELVISK JEGER", "1943-01-15", "alone")
+                        new EuccDTO.LegalRepresentative("Ola Norman", "1943-01-15", "alone")
                 ));
 
                 yield e;
             }
-            case "FORMBAR OPPORTUNIST" -> {
+            case "Kari Norman" -> {
                 e.getCredential().getClaims().getCredentialSubject().setLegalRepresentative(List.of(
-                        new EuccDTO.LegalRepresentative("FORMBAR OPPORTUNIST", "1993-05-10", "alone")
+                        new EuccDTO.LegalRepresentative("Kari Norman", "1993-05-10", "alone")
                 ));
 
                 yield e;

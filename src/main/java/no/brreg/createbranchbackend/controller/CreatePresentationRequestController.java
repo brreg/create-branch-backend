@@ -27,6 +27,8 @@ public class CreatePresentationRequestController {
             return ResponseEntity.badRequest().body("Missing x-session-id in header");
         }
 
+        log.info("Creating QR code for session ID: {}", userSessionId);
+
         try {
             PresentationUrlDTO presentationResponseDTO = igrantService.createPresentationUrlBulk(userSessionId);
             return ResponseEntity.ok(presentationResponseDTO);

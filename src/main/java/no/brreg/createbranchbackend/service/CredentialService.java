@@ -46,7 +46,7 @@ public class CredentialService {
         parseAndStoreCredential(euccCredentialNode, npidCredentialNode, userSessionId, holderWalletAddress);
     }
 
-    private void parseAndStoreCredential(JsonNode euccCredentialNode, JsonNode npidCredentialNode, String challengeId, String holderWalletAddress) {
+    private void parseAndStoreCredential(JsonNode euccCredentialNode, JsonNode npidCredentialNode, String sessionId, String holderWalletAddress) {
         Credential c = new Credential();
 
         // Hent credentialSubject for NPID
@@ -89,6 +89,7 @@ public class CredentialService {
         c.setForetakNaceBeskrivelse(e.path("credentialSubject").path("legal_person").path("legal_entity_activity").path("code").asText());
 
         c.setForetakAktive(e.path("credentialSubject").path("legal_person").path("legal_entity_status").asText());
+        
 // TODO: Support multiple people here !
         c.setRepresentantNavn(e.path("credentialSubject").path("legal_representative").get(0).path("full_name").asText());
 
@@ -97,7 +98,7 @@ public class CredentialService {
         c.setRepresentantSignaturRegel(e.path("credentialSubject").path("legal_representative").get(0).path("signatory_rule").asText());
 
         // Sett userSessionId
-        c.setUserSessionId(challengeId);
+        c.setUserSessionId(sessionId);
 
         // TODO: Why do we need these, and what for ?
         // Hent issuer
@@ -110,7 +111,7 @@ public class CredentialService {
         credentialRepository.save(c);
 
         // inform frontend about data is received from Mattr
-        String destination = "/topic/sessions/" + challengeId;
+        String destination = "/topic/sessions/" + sessionId;
         messagingTemplate.convertAndSend(destination, "Data available for session " + c);
     }
 }
