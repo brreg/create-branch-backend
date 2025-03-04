@@ -4,13 +4,12 @@ package no.brreg.createbranchbackend.service;
 import lombok.extern.slf4j.Slf4j;
 import no.brreg.createbranchbackend.dto.PresentationRequestDTO;
 import no.brreg.createbranchbackend.dto.PresentationUrlDTO;
-import no.brreg.createbranchbackend.dto.ReciteDTO;
+import no.brreg.createbranchbackend.dto.ReceiptDTO;
 import no.brreg.createbranchbackend.model.Credential;
 import no.brreg.createbranchbackend.model.PresentationResponse;
 import no.brreg.createbranchbackend.repository.CredentialRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -122,7 +121,7 @@ public class IgrantService
         }
     }
 
-    public PresentationUrlDTO issueRecite(String userSessionId) throws Exception {
+    public PresentationUrlDTO issueReceipt(String userSessionId) throws Exception {
 
         try {
             Credential c = credentialRepository.findByUserSessionId(userSessionId);
@@ -131,9 +130,9 @@ public class IgrantService
                 return null;
             }
             else {
-                ReciteDTO reciteDTO = new ReciteDTO();
+                ReceiptDTO receiptDTO = new ReceiptDTO();
 
-                reciteDTO.getCredential().getClaims().setLegal_person_id(c.getForetakOrgnr());
+                receiptDTO.getCredential().getClaims().setLegal_person_id(c.getForetakOrgnr());
 
                 String igrantURL = endpoint + "v2/config/digital-wallet/openid/sdjwt/credential/issue";
 
@@ -141,13 +140,13 @@ public class IgrantService
                 PresentationResponse presentationResponse = webClient.post()
                         .uri(igrantURL)
                         .header("Authorization",api_key)
-                        .bodyValue(reciteDTO)
+                        .bodyValue(receiptDTO)
                         .retrieve()
                         .onStatus(
                                 status -> status != HttpStatus.OK,
                                 clientResponse -> clientResponse.bodyToMono(String.class)
                                         .flatMap(errorBody -> {
-                                            log.error("Error creating recite request: {}", errorBody);
+                                            log.error("Error creating receipt request: {}", errorBody);
                                             return Mono.error(new Exception("Error creating presentation request: " + errorBody));
                                         })
                         )

@@ -8,8 +8,6 @@ import no.brreg.createbranchbackend.service.SkjemaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
-
 // TODO: implementer skjema innsending og signering i frontend
 
 @Slf4j

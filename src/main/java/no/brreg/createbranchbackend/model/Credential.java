@@ -87,7 +87,7 @@ public class Credential {
     @GeneratedValue
     private Long id;
 
-    // Henviser til .challengeId
+    // Henviser til .sessionId
     private String userSessionId;
 
     // Henviser til .presentation.verifiableCredential[].issuer.name

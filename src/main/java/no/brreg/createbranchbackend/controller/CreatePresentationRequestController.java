@@ -3,7 +3,6 @@ package no.brreg.createbranchbackend.controller;
 import lombok.extern.slf4j.Slf4j;
 import no.brreg.createbranchbackend.dto.PresentationUrlDTO;
 import no.brreg.createbranchbackend.service.IgrantService;
-//import no.brreg.createbranchbackend.service.MattrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +26,8 @@ public class CreatePresentationRequestController {
             log.error("Missing x-session-id in header");
             return ResponseEntity.badRequest().body("Missing x-session-id in header");
         }
+
+        log.info("Creating QR code for session ID: {}", userSessionId);
 
         try {
             PresentationUrlDTO presentationResponseDTO = igrantService.createPresentationUrlBulk(userSessionId);
@@ -52,15 +53,15 @@ public class CreatePresentationRequestController {
         }
     }
 
-    @PostMapping("/qrcodeRecite")
-    public ResponseEntity<?> createQrCodeRecite(@RequestHeader(value = "x-session-id") String userSessionId) {
+    @PostMapping("/qrcodeReceipt")
+    public ResponseEntity<?> createQrCodeReceipt(@RequestHeader(value = "x-session-id") String userSessionId) {
         if (userSessionId == null || userSessionId.isEmpty()) {
             log.error("Missing x-session-id in header");
             return ResponseEntity.badRequest().body("Missing x-session-id in header");
         }
 
         try {
-            PresentationUrlDTO presentationResponseDTO = igrantService.issueRecite(userSessionId);
+            PresentationUrlDTO presentationResponseDTO = igrantService.issueReceipt(userSessionId);
             return ResponseEntity.ok(presentationResponseDTO);
         } catch (Exception e) {
             log.error("Error creating QR code: {}", e.getMessage(), e);
