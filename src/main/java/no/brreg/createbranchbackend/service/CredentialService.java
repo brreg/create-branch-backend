@@ -3,6 +3,7 @@ package no.brreg.createbranchbackend.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import no.brreg.createbranchbackend.model.Credential;
 import no.brreg.createbranchbackend.repository.CredentialRepository;
+import no.brreg.createbranchbackend.dto.CredentialValidationResultDTO;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -113,6 +114,36 @@ public class CredentialService {
         // inform frontend about data is received from Mattr
         String destination = "/topic/sessions/" + sessionId;
         messagingTemplate.convertAndSend(destination, "Data available for session " + c);
+    }
+
+    public CredentialValidationResultDTO validateCredential(String userSessionId) {
+        Credential c = credentialRepository.findByUserSessionId(userSessionId);
+        
+        if (c == null) {
+            return new CredentialValidationResultDTO(false, "Credential not found");
+        }
+        // Validate EUCC Trust Anchor
+        if (c.getIssuingAuthority().isEmpty() || c.getIssuingAuthorityId().isEmpty()) {
+            return new CredentialValidationResultDTO(false, "Missing EUCC Trust Anchor");
+        }
+
+        // Validate NPID Trust Anchor
+        // TODO: Implement this
+
+        // Validate Legal Representative
+        if (!c.getRepresentantNavn().equals(c.getPersonNavn())) {
+            return new CredentialValidationResultDTO(false, "Missing Legal Representative and NPID holder is not a match");
+        }
+        // Validate signature rights
+        if (!"alone".equals(c.getRepresentantSignaturRegel())) {
+            return new CredentialValidationResultDTO(false, "Legal Representative does not have alone signature rights");
+        }
+        if (c.getIssuingAuthority().equals("Brønnøysundregistrene") || c.getIssuingAuthority().equals("Bolagsverket") ) {
+            return new CredentialValidationResultDTO(true, "Credential is valid");
+        }
+        else {
+            return new CredentialValidationResultDTO(false, "Invalid EUCC Trust Anchor");
+        }
     }
 }
 

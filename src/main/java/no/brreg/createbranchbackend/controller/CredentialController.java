@@ -3,6 +3,7 @@ package no.brreg.createbranchbackend.controller;
 import lombok.extern.slf4j.Slf4j;
 import no.brreg.createbranchbackend.model.Credential;
 import no.brreg.createbranchbackend.service.CredentialService;
+import no.brreg.createbranchbackend.dto.CredentialValidationResultDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,26 @@ public class CredentialController {
         } catch (Exception e) {
             log.error("Error getting credential", e);
             return ResponseEntity.badRequest().body("Error getting credential");
+        }
+    }
+
+    @GetMapping("/validateCredential")
+    public ResponseEntity<?> validateCredential(@RequestHeader(value = "x-session-id") String userSessionId) {
+        if (userSessionId == null || userSessionId.isEmpty()) {
+            log.error("Missing x-session-id in header");
+            return ResponseEntity.badRequest().body(new CredentialValidationResultDTO(false, "Missing x-session-id in header"));
+        }
+
+        try {
+            CredentialValidationResultDTO result = credentialService.validateCredential(userSessionId);
+            if (result.isValid()) {
+                return ResponseEntity.ok(result);
+            } else {
+                return ResponseEntity.badRequest().body(result.getReason());
+            }
+        } catch (Exception e) {
+            log.error("Error validating credential", e);
+            return ResponseEntity.badRequest().body("Error validating credential: " + e.getMessage());
         }
     }
 
