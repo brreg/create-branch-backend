@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ReceiptDTO {
     private String issuanceMode = "InTime";
-    private String credentialDefinitionId = "9ff6c695-28db-4c74-b165-56b58cbd6ddb";
+    private String credentialDefinitionId = "b8eb2a49-ef8e-4344-b1d9-d66690e684c0";
     private Credential credential = new Credential();
 
     @Data
@@ -14,7 +14,7 @@ public class ReceiptDTO {
 
         @Data
         public static class Claims {
-            private String legal_person_id = "NOFOR:311032348";
+            private String EUID = "NOFOR:311032348";
         }
     }
 }

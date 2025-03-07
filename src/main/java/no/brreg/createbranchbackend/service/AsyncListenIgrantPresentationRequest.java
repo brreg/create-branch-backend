@@ -86,7 +86,7 @@ public class AsyncListenIgrantPresentationRequest {
                     break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.print(e);
             }
         }
     }
