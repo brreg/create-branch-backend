@@ -132,7 +132,7 @@ public class IgrantService
             else {
                 ReceiptDTO receiptDTO = new ReceiptDTO();
 
-                receiptDTO.getCredential().getClaims().setEUID(c.getForetakOrgnr());
+                receiptDTO.getCredential().getClaims().setEuid(c.getForetakOrgnr());
 
                 String igrantURL = endpoint + "v2/config/digital-wallet/openid/sdjwt/credential/issue";
 
